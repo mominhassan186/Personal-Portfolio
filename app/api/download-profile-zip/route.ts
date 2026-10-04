@@ -1,18 +1,34 @@
 import { NextResponse } from "next/server";
 import fs from "node:fs";
 import path from "node:path";
-import * as archiverModule from "archiver";
+import { createRequire } from "node:module";
 
-const archiver = ((archiverModule as any).default || archiverModule) as any;
+const require = createRequire(import.meta.url);
+const archiver = require("archiver");
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-export async function GET() {
-  const protectedDir = path.join(process.cwd(), "public", "protected-docs");
+function getProtectedDir(): string | null {
+  const possiblePaths = [
+    path.join(process.cwd(), "public", "protected-docs"),
+    path.join(process.cwd(), "protected-docs"),
+    path.join(__dirname, "..", "..", "..", "public", "protected-docs"),
+  ];
 
-  if (!fs.existsSync(protectedDir)) {
-    console.error("Directory not found at:", protectedDir);
+  for (const p of possiblePaths) {
+    if (fs.existsSync(p)) {
+      return p;
+    }
+  }
+  return null;
+}
+
+export async function GET() {
+  const protectedDir = getProtectedDir();
+
+  if (!protectedDir) {
+    console.error("Protected documents folder not found. Searched from:", process.cwd());
     return NextResponse.json(
       { error: "Protected documents directory not found on server" },
       { status: 404 }
@@ -47,7 +63,7 @@ export async function GET() {
   } catch (error: any) {
     console.error("ZIP Generation Error:", error?.message || error);
     return NextResponse.json(
-      { error: "Failed to generate zip file", details: String(error) },
+      { error: "Failed to create archive", details: String(error) },
       { status: 500 }
     );
   }
