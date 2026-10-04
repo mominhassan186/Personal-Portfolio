@@ -1,10 +1,7 @@
 import { NextResponse } from "next/server";
 import fs from "node:fs";
 import path from "node:path";
-import { createRequire } from "node:module";
-
-const require = createRequire(import.meta.url);
-const archiver = require("archiver");
+import JSZip from "jszip";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -24,11 +21,30 @@ function getProtectedDir(): string | null {
   return null;
 }
 
+function addDirectoryToZip(zip: JSZip, folderPath: string) {
+  const items = fs.readdirSync(folderPath);
+
+  for (const item of items) {
+    const fullPath = path.join(folderPath, item);
+    const stat = fs.statSync(fullPath);
+
+    if (stat.isDirectory()) {
+      const subFolder = zip.folder(item);
+      if (subFolder) {
+        addDirectoryToZip(subFolder, fullPath);
+      }
+    } else {
+      const fileData = fs.readFileSync(fullPath);
+      zip.file(item, fileData);
+    }
+  }
+}
+
 export async function GET() {
   const protectedDir = getProtectedDir();
 
   if (!protectedDir) {
-    console.error("Protected documents folder not found. Searched from:", process.cwd());
+    console.error("Protected documents directory not found. Searched from:", process.cwd());
     return NextResponse.json(
       { error: "Protected documents directory not found on server" },
       { status: 404 }
@@ -36,28 +52,25 @@ export async function GET() {
   }
 
   try {
-    const archive = archiver("zip", { zlib: { level: 9 } });
-    const chunks: Buffer[] = [];
+    const zip = new JSZip();
+    const rootFolder = zip.folder("Momin Files");
 
-    archive.on("data", (chunk: Buffer) => chunks.push(chunk));
+    if (rootFolder) {
+      addDirectoryToZip(rootFolder, protectedDir);
+    }
 
-    const archivePromise = new Promise<Buffer>((resolve, reject) => {
-      archive.on("end", () => resolve(Buffer.concat(chunks)));
-      archive.on("error", (err: unknown) => reject(err));
+    const zipBuffer = await zip.generateAsync({
+      type: "uint8array",
+      compression: "DEFLATE",
+      compressionOptions: { level: 6 },
     });
 
-    archive.directory(protectedDir, "Momin Files");
-    await archive.finalize();
-
-    const zipBuffer = await archivePromise;
-    const uint8Array = new Uint8Array(zipBuffer);
-
-    return new Response(uint8Array, {
+    return new Response(zipBuffer, {
       status: 200,
       headers: {
         "Content-Type": "application/zip",
         "Content-Disposition": 'attachment; filename="Momin_Hassan_Profile.zip"',
-        "Content-Length": uint8Array.byteLength.toString(),
+        "Content-Length": zipBuffer.byteLength.toString(),
       },
     });
   } catch (error: any) {
