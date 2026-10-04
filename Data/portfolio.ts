@@ -124,7 +124,7 @@ export const portfolioData = {
   ] as EducationItem[],
 
   certificates: [
-      {
+    {
       title: "PSEB Freelancer Certificate",
       institution: "Pakistan Software Export Board (PSEB) - Ministry of IT & Telecom",
       year: "Valid until Aug 2027",
@@ -191,14 +191,14 @@ export const portfolioData = {
 
     // Category 2: Companies Who Recommend Me (focused on company & recommendation details)
     recommended: [
-      
-       {
-      title: "Systems Thinking for Product Designers",
-      institution: "LinkedIn",
-      year: "Oct 2024",
-      type: "Certificate",
-      file: "/certificates/systems-thinking.pdf", // PDF
-    },
+
+      {
+        title: "Systems Thinking for Product Designers",
+        institution: "LinkedIn",
+        year: "Oct 2024",
+        type: "Certificate",
+        file: "/certificates/systems-thinking.pdf", // PDF
+      },
 
       {
         name: "Olive Dating LLC",
@@ -266,53 +266,53 @@ export const portfolioData = {
     ] as CaseStudyItem[],
     // Generates work-1.webp through work-20.webp
 
-images: [
-"/uiux/visual-portfolio/work-1.webp",
-"/uiux/visual-portfolio/work-2.webp",
-"/uiux/visual-portfolio/work-3.webp",
-"/uiux/visual-portfolio/work-4.webp",
-"/uiux/visual-portfolio/work-5.webp",
-"/uiux/visual-portfolio/work-6.webp",
-"/uiux/visual-portfolio/work-7.webp",
-"/uiux/visual-portfolio/work-8.webp",
-// "/uiux/visual-portfolio/work-9.webp",
-"/uiux/visual-portfolio/work-10.webp",
-"/uiux/visual-portfolio/work-11.webp",
-"/uiux/visual-portfolio/work-12.webp",
-"/uiux/visual-portfolio/work-13.webp",
-"/uiux/visual-portfolio/work-14.webp",
-"/uiux/visual-portfolio/work-15.webp",
-"/uiux/visual-portfolio/work-16.webp",
-"/uiux/visual-portfolio/work-17.webp",
-"/uiux/visual-portfolio/work-18.webp",
-"/uiux/visual-portfolio/work-19.webp",
-"/uiux/visual-portfolio/work-20.webp",
-"/uiux/visual-portfolio/work-21.webp",
-"/uiux/visual-portfolio/work-22.webp",
-"/uiux/visual-portfolio/work-23.webp",
-"/uiux/visual-portfolio/work-24.webp",
-"/uiux/visual-portfolio/work-25.webp",
-"/uiux/visual-portfolio/work-26.webp",
-"/uiux/visual-portfolio/work-27.webp",
-"/uiux/visual-portfolio/work-28.webp",
-"/uiux/visual-portfolio/work-29.webp",
-"/uiux/visual-portfolio/work-30.webp",
-"/uiux/visual-portfolio/work-31.webp",
-"/uiux/visual-portfolio/work-32.webp",
-"/uiux/visual-portfolio/work-33.webp",
-"/uiux/visual-portfolio/work-34.webp",
-"/uiux/visual-portfolio/work-35.webp",
-"/uiux/visual-portfolio/work-36.webp",
-"/uiux/visual-portfolio/work-37.webp",
-"/uiux/visual-portfolio/work-38.webp",
-"/uiux/visual-portfolio/work-39.webp",
-//"/uiux/visual-portfolio/work-40.webp",
-"/uiux/visual-portfolio/work-41.webp",
-"/uiux/visual-portfolio/work-42.webp",
-"/uiux/visual-portfolio/work-43.webp",
-"/uiux/visual-portfolio/work-44.webp",
-"/uiux/visual-portfolio/work-45.webp",
-"/uiux/visual-portfolio/work-46.webp",
+    images: [
+      "/uiux/visual-portfolio/work-1.webp",
+      "/uiux/visual-portfolio/work-2.webp",
+      "/uiux/visual-portfolio/work-3.webp",
+      "/uiux/visual-portfolio/work-4.webp",
+      "/uiux/visual-portfolio/work-5.webp",
+      "/uiux/visual-portfolio/work-6.webp",
+      "/uiux/visual-portfolio/work-7.webp",
+      "/uiux/visual-portfolio/work-8.webp",
+      // "/uiux/visual-portfolio/work-9.webp",
+      "/uiux/visual-portfolio/work-10.webp",
+      "/uiux/visual-portfolio/work-11.webp",
+      "/uiux/visual-portfolio/work-12.webp",
+      "/uiux/visual-portfolio/work-13.webp",
+      "/uiux/visual-portfolio/work-14.webp",
+      "/uiux/visual-portfolio/work-15.webp",
+      "/uiux/visual-portfolio/work-16.webp",
+      "/uiux/visual-portfolio/work-17.webp",
+      "/uiux/visual-portfolio/work-18.webp",
+      "/uiux/visual-portfolio/work-19.webp",
+      "/uiux/visual-portfolio/work-20.webp",
+      "/uiux/visual-portfolio/work-21.webp",
+      "/uiux/visual-portfolio/work-22.webp",
+      "/uiux/visual-portfolio/work-23.webp",
+      "/uiux/visual-portfolio/work-24.webp",
+      "/uiux/visual-portfolio/work-25.webp",
+      "/uiux/visual-portfolio/work-26.webp",
+      "/uiux/visual-portfolio/work-27.webp",
+      "/uiux/visual-portfolio/work-28.webp",
+      "/uiux/visual-portfolio/work-29.webp",
+      "/uiux/visual-portfolio/work-30.webp",
+      "/uiux/visual-portfolio/work-31.webp",
+      "/uiux/visual-portfolio/work-32.webp",
+      "/uiux/visual-portfolio/work-33.webp",
+      "/uiux/visual-portfolio/work-34.webp",
+      "/uiux/visual-portfolio/work-35.webp",
+      "/uiux/visual-portfolio/work-36.webp",
+      "/uiux/visual-portfolio/work-37.webp",
+      "/uiux/visual-portfolio/work-38.webp",
+      "/uiux/visual-portfolio/work-39.webp",
+      //"/uiux/visual-portfolio/work-40.webp",
+      "/uiux/visual-portfolio/work-41.webp",
+      "/uiux/visual-portfolio/work-42.webp",
+      "/uiux/visual-portfolio/work-43.webp",
+      "/uiux/visual-portfolio/work-44.webp",
+      "/uiux/visual-portfolio/work-45.webp",
+      "/uiux/visual-portfolio/work-46.webp",
     ] as string[], // <-- Add 'as string[]' here
   },
 
@@ -385,154 +385,154 @@ images: [
   ],
 
   // Private Files
-privateFiles: {
-  title: "Confidential Documents",
-  description: "Verified identity records, academic credentials, and official certificates.",
-  zipDownloadUrl: "/api/download-profile-zip",
-  categories: [
-    {
-      categoryName: "Academic & Education",
-      files: [
-        { 
-          name: "Matriculation Certificate", 
-          type: "pdf", 
-          file: "Matric front and back.pdf", // <-- Exact file name in protected-docs/
-          size: "In Science" 
-        },
-        { 
-          name: "Intermediate Certificate", 
-          type: "pdf", 
-          file: "Inter front and back.pdf", 
-          size: "Pre-Engineering" 
-        },
-        { 
-          name: "Bachelors Degree", 
-          type: "pdf", 
-          file: "BSCS Degree.pdf", 
-          size: "BSCS" 
-        },
-        { 
-          name: "Bachelors Transcript", 
-          type: "pdf", 
-          file: "Bachelors_Transcript.pdf", 
-          size: "BSCS" 
-        },
-      ],
-    },
+  privateFiles: {
+    title: "Confidential Documents",
+    description: "Verified identity records, academic credentials, and official certificates.",
+    zipDownloadUrl: "/api/download-profile-zip",
+    categories: [
+      {
+        categoryName: "Academic & Education",
+        files: [
+          {
+            name: "Matriculation Certificate",
+            type: "pdf",
+            file: "Matric front and back.pdf", // <-- Exact file name in protected-docs/
+            size: "In Science"
+          },
+          {
+            name: "Intermediate Certificate",
+            type: "pdf",
+            file: "Inter front and back.pdf",
+            size: "Pre-Engineering"
+          },
+          {
+            name: "Bachelors Degree",
+            type: "pdf",
+            file: "BSCS Degree.pdf",
+            size: "BSCS"
+          },
+          {
+            name: "Bachelors Transcript",
+            type: "pdf",
+            file: "Bachelors_Transcript.pdf",
+            size: "BSCS"
+          },
+        ],
+      },
 
-    {
-      categoryName: "Identity & Licenses",
-      files: [
+      {
+        categoryName: "Identity & Licenses",
+        files: [
 
-        { 
-          name: "ID Card", 
-          type: "pdf", 
-          file: "ID Card Front-Back.pdf",
-          size: "Valid until 2033"
-        },
+          {
+            name: "ID Card",
+            type: "pdf",
+            file: "ID Card Front-Back.pdf",
+            size: "Valid until 2033"
+          },
 
-         { 
-          name: "Passport", 
-          type: "pdf", 
-          file: "Passport.pdf",
-          size: "Valid until 2033"
-        },
+          {
+            name: "Passport",
+            type: "pdf",
+            file: "Passport.pdf",
+            size: "Valid until 2033"
+          },
 
-        { 
-          name: "Driving License", 
-          type: "pdf", 
-          file: "Driving_License.pdf",
-          size: "Not Yet Issued" 
-        },
+          {
+            name: "Driving License",
+            type: "pdf",
+            file: "Driving_License.pdf",
+            size: "Not Yet Issued"
+          },
 
-        { 
-          name: "Birth Certificate", 
-          type: "pdf", 
-          file: "Birth Certificate.pdf",
-          size: "" 
-        },
+          {
+            name: "Birth Certificate",
+            type: "pdf",
+            file: "Birth Certificate.pdf",
+            size: ""
+          },
 
-        { 
-          name: "Domicile Certificate", 
-          type: "pdf", 
-          file: "Domicile.pdf",
-          size: "" 
-        },
+          {
+            name: "Domicile Certificate",
+            type: "pdf",
+            file: "Domicile.pdf",
+            size: ""
+          },
 
-      ],
-    },
+        ],
+      },
 
-    {
-      categoryName: "University Letters",
-      files: [
-        { 
-          name: "From Dr. Abdul Rauf", 
-          type: "pdf", 
-          file: "Dr. Abdul Rauf - Rec Letter.pdf", 
-          size: "" 
-        },
+      {
+        categoryName: "University Letters",
+        files: [
+          {
+            name: "From Dr. Abdul Rauf",
+            type: "pdf",
+            file: "Dr. Abdul Rauf - Rec Letter.pdf",
+            size: ""
+          },
 
-        { 
-          name: "From Dr. Majid", 
-          type: "pdf", 
-          file: "Dr. Majid - Rec Letter.pdf", 
-          size: "" 
-        },
-       
-        { 
-          name: "University Bonafide Letter", 
-          type: "pdf", 
-          file: "Uni Bonafide Letter.pdf", 
-          size: "" 
-        },
-      ],
-    },
+          {
+            name: "From Dr. Majid",
+            type: "pdf",
+            file: "Dr. Majid - Rec Letter.pdf",
+            size: ""
+          },
 
-    {
-      categoryName: "Work Recommendations Letters",
-      files: [
-        { 
-          name: "Clientment Recommendation Letter", 
-          type: "pdf", 
-          file: "FBR_Certificate.pdf", 
-          size: "" 
-        },
+          {
+            name: "University Bonafide Letter",
+            type: "pdf",
+            file: "Uni Bonafide Letter.pdf",
+            size: ""
+          },
+        ],
+      },
 
-        { 
-          name: "Olive Dating LLC Recommendation Letter", 
-          type: "pdf", 
-          file: "Olive Dating LLC Recommendation Letter.pdf", 
-          size: "" 
-        },
+      {
+        categoryName: "Work Recommendations Letters",
+        files: [
+          {
+            name: "Clientment Recommendation Letter",
+            type: "pdf",
+            file: "FBR_Certificate.pdf",
+            size: ""
+          },
 
-        { 
-          name: "HDIDA AUTO Recommendation Letter", 
-          type: "pdf", 
-          file: "HDIDA AUTO Recommendation Letter.pdf", 
-          size: "" 
-        },
-        
-      ],
-    },
+          {
+            name: "Olive Dating LLC Recommendation Letter",
+            type: "pdf",
+            file: "Olive Dating LLC Recommendation Letter.pdf",
+            size: ""
+          },
 
-    {
-      categoryName: "Official Profile Photos",
-      files: [
-        { 
-          name: "Profile Picture", 
-          type: "image", 
-          file: "Profile Picture.JPEG", 
-          size: "" 
-        },
-        { 
-          name: "Profile with Glasses", 
-          type: "image", 
-          file: "Profile with Glasses.JPEG", 
-          size: "" 
-        },
-      ],
-    },
-  ],
-},
+          {
+            name: "HDIDA AUTO Recommendation Letter",
+            type: "pdf",
+            file: "HDIDA AUTO Recommendation Letter.pdf",
+            size: ""
+          },
+
+        ],
+      },
+
+      {
+        categoryName: "Official Profile Photos",
+        files: [
+          {
+            name: "Profile Picture",
+            type: "image",
+            file: "Profile Picture.JPEG",
+            size: ""
+          },
+          {
+            name: "Profile with Glasses",
+            type: "image",
+            file: "Profile with Glasses.JPEG",
+            size: ""
+          },
+        ],
+      },
+    ],
+  },
 };
 
