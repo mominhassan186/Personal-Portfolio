@@ -1,48 +1,49 @@
 import { NextResponse } from "next/server";
-import fs from "node:fs/promises";
-import os from "node:os";
+import fs from "node:fs";
 import path from "node:path";
-import { execFile } from "node:child_process";
-import { promisify } from "node:util";
+import * as archiverModule from "archiver";
 
-const execFileAsync = promisify(execFile);
+// Resolve CommonJS / ESM export structure cleanly
+const archiver = ((archiverModule as any).default || archiverModule) as any;
 
 export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 export async function GET() {
   const protectedDir = path.join(process.cwd(), "protected-docs");
 
-  try {
-    await fs.access(protectedDir);
-  } catch {
+  if (!fs.existsSync(protectedDir)) {
     return NextResponse.json({ error: "Protected directory not found" }, { status: 404 });
   }
 
-  const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "profile-bundle-"));
-  const wrapperDir = path.join(tempDir, "Momin Files");
-  const archivePath = path.join(tempDir, "Momin_Hassan_Profile.zip");
-
   try {
-    // 1. Copy the protected docs into a wrapper folder named "Momin Files"
-    await fs.cp(protectedDir, wrapperDir, { recursive: true });
+    const archive = archiver("zip", { zlib: { level: 9 } });
+    const chunks: Buffer[] = [];
 
-    // 2. Compress the "Momin Files" folder so unzipping unpacks the folder directly
-    await execFileAsync("zip", ["-r", "-q", archivePath, "Momin Files"], {
-      cwd: tempDir,
+    archive.on("data", (chunk: Buffer) => chunks.push(chunk));
+
+    const archivePromise = new Promise<Buffer>((resolve, reject) => {
+      archive.on("end", () => resolve(Buffer.concat(chunks)));
+      archive.on("error", (err: unknown) => reject(err));
     });
 
-    const archive = await fs.readFile(archivePath);
+    // Bundles into a root "Momin Files" folder with all your subdirectories
+    archive.directory(protectedDir, "Momin Files");
+    await archive.finalize();
 
-    return new Response(archive, {
+    const zipBuffer = await archivePromise;
+    const uint8Array = new Uint8Array(zipBuffer);
+
+    return new Response(uint8Array, {
+      status: 200,
       headers: {
         "Content-Type": "application/zip",
         "Content-Disposition": 'attachment; filename="Momin_Hassan_Profile.zip"',
+        "Content-Length": uint8Array.byteLength.toString(),
       },
     });
   } catch (error) {
-    return NextResponse.json({ error: "Failed to generate ZIP archive" }, { status: 500 });
-  } finally {
-    // 3. Clean up temporary files
-    await fs.rm(tempDir, { recursive: true, force: true });
+    console.error("ZIP Generation Error:", error);
+    return NextResponse.json({ error: "Failed to create archive" }, { status: 500 });
   }
 }
