@@ -73,7 +73,7 @@ export default function Home() {
   const [activeSection, setActiveSection] = useState("about");
   const [windowPosition, setWindowPosition] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
-  
+
   // Multi-window Preview State
   const [previewWindows, setPreviewWindows] = useState<PreviewItem[]>([]);
   const [sidebarImgError, setSidebarImgError] = useState(false);
@@ -164,17 +164,17 @@ export default function Home() {
   const openSection = (section: string) => setActiveSection(section);
 
   return (
-  <main
-  className={`mac-desktop ${isDragging ? "is-dragging" : ""}`}
-  style={{
-    backgroundImage: `url(${portfolioData.personal.wallpaper})`,
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-  }}
-  onMouseMove={dragWindow}
-  onMouseUp={stopDragging}
-  onMouseLeave={stopDragging}
->
+    <main
+      className={`mac-desktop ${isDragging ? "is-dragging" : ""}`}
+      style={{
+        backgroundImage: `url(${portfolioData.personal.wallpaper})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+      onMouseMove={dragWindow}
+      onMouseUp={stopDragging}
+      onMouseLeave={stopDragging}
+    >
       {/* MENU BAR */}
       <div className="mac-menu-bar">
         <div className="menu-left">
@@ -319,7 +319,7 @@ export default function Home() {
           <span>{portfolioData.personal.availability}</span>
         </footer>
       </div>
-{/* DOCK */}
+      {/* DOCK */}
       <div className="dock">
         {/* Finder */}
         <button className="dock-item" onClick={() => openSection("about")} title="Finder">
@@ -455,8 +455,8 @@ export default function Home() {
           <Trash2 size={24} className="hidden text-slate-700" />
         </button>
       </div>
-      
-      
+
+
       {/* MULTI-WINDOW PREVIEW MANAGER (NON-BLOCKING DESKTOP) */}
       {previewWindows.map((win) => (
         <DraggablePreviewModal
@@ -806,14 +806,14 @@ function DataEngineering() {
       <div className="data-project-list">
         {portfolioData.dataEngineering.projects.map((project, index) => (
           <div className="data-project-card" key={index}>
-            
+
             <div className="data-project-content">
               <div className="data-project-header">
                 <h3>{project.title}</h3>
                 {project.status && <span className="project-status">{project.status}</span>}
               </div>
               <p className="technologies">{project.technologies}</p>
-              
+
               <ul className="list-disc pl-4 my-2 text-xs text-slate-600 space-y-1">
                 {project.bullets.map((bullet, bIdx) => (
                   <li key={bIdx}>{bullet}</li>
@@ -872,26 +872,34 @@ function Private({
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
 
+  useEffect(() => {
+    fetch("/api/unlock-private")
+      .then((res) => {
+        if (res.ok) setIsAuthenticated(true);
+      })
+      .catch(() => { });
+  }, []);
+
   const handleUnlock = async (e: React.FormEvent) => {
-  e.preventDefault();
-  setErrorMsg("");
+    e.preventDefault();
+    setErrorMsg("");
 
-  try {
-    const res = await fetch("/api/unlock-private", { // <-- Change to unlock-private
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ password }),
-    });
+    try {
+      const res = await fetch("/api/unlock-private", { // <-- Change to unlock-private
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ password }),
+      });
 
-    if (res.ok) {
-      setIsAuthenticated(true);
-    } else {
-      setErrorMsg("Incorrect access key. Please contact me for access.");
+      if (res.ok) {
+        setIsAuthenticated(true);
+      } else {
+        setErrorMsg("Incorrect access key. Please contact me for access.");
+      }
+    } catch (err) {
+      setErrorMsg("Error verifying access key.");
     }
-  } catch (err) {
-    setErrorMsg("Error verifying access key.");
-  }
-};
+  };
 
   // LOCKED STATE SCREEN
   if (!isAuthenticated) {
@@ -961,6 +969,7 @@ function Private({
               {group.files.map((file, fileIdx) => {
                 const isImage = file.type === "image";
                 const secureFileUrl = `/api/protected-docs?file=${encodeURIComponent(file.file)}`;
+                const secureDownloadUrl = `/api/protected-docs?file=${encodeURIComponent(file.file)}&download=1`;
 
                 return (
                   <div
@@ -981,7 +990,7 @@ function Private({
                     </div>
 
                     <a
-                      href={secureFileUrl}
+                      href={secureDownloadUrl}
                       download={file.file}
                       onClick={(e) => e.stopPropagation()}
                       title="Download file"
@@ -992,11 +1001,11 @@ function Private({
                   </div>
                 );
               })}
-            </div>
+          </div>
           </div>
         ))}
-      </div>
     </div>
+    </div >
   );
 }
 
