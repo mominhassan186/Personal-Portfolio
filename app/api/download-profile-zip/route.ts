@@ -3,17 +3,35 @@ import fs from "node:fs";
 import path from "node:path";
 import * as archiverModule from "archiver";
 
-// Resolve CommonJS / ESM export structure cleanly
 const archiver = ((archiverModule as any).default || archiverModule) as any;
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-export async function GET() {
-  const protectedDir = path.join(process.cwd(), "protected-docs");
+function getProtectedDir(): string | null {
+  const possiblePaths = [
+    path.join(process.cwd(), "protected-docs"),
+    path.join(process.cwd(), "..", "protected-docs"),
+    path.join(process.cwd(), ".next", "server", "protected-docs"),
+  ];
 
-  if (!fs.existsSync(protectedDir)) {
-    return NextResponse.json({ error: "Protected directory not found" }, { status: 404 });
+  for (const p of possiblePaths) {
+    if (fs.existsSync(p)) {
+      return p;
+    }
+  }
+  return null;
+}
+
+export async function GET() {
+  const protectedDir = getProtectedDir();
+
+  if (!protectedDir) {
+    console.error("Protected directory not found. Searched from:", process.cwd());
+    return NextResponse.json(
+      { error: "Protected documents folder not found on server" },
+      { status: 404 }
+    );
   }
 
   try {
@@ -27,7 +45,6 @@ export async function GET() {
       archive.on("error", (err: unknown) => reject(err));
     });
 
-    // Bundles into a root "Momin Files" folder with all your subdirectories
     archive.directory(protectedDir, "Momin Files");
     await archive.finalize();
 
@@ -42,8 +59,11 @@ export async function GET() {
         "Content-Length": uint8Array.byteLength.toString(),
       },
     });
-  } catch (error) {
-    console.error("ZIP Generation Error:", error);
-    return NextResponse.json({ error: "Failed to create archive" }, { status: 500 });
+  } catch (error: any) {
+    console.error("ZIP Generation Error:", error?.message || error);
+    return NextResponse.json(
+      { error: "Failed to generate zip file", details: String(error) },
+      { status: 500 }
+    );
   }
 }
