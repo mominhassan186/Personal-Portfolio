@@ -1,8 +1,4 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
-  outputFileTracingIncludes: {
-    "/api/**/*": ["./protected-docs/**/*"],
-  },
-};
+const nextConfig = {};
 
 export default nextConfig;

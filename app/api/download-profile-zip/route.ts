@@ -8,28 +8,13 @@ const archiver = ((archiverModule as any).default || archiverModule) as any;
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-function getProtectedDir(): string | null {
-  const possiblePaths = [
-    path.join(process.cwd(), "protected-docs"),
-    path.join(process.cwd(), "..", "protected-docs"),
-    path.join(process.cwd(), ".next", "server", "protected-docs"),
-  ];
-
-  for (const p of possiblePaths) {
-    if (fs.existsSync(p)) {
-      return p;
-    }
-  }
-  return null;
-}
-
 export async function GET() {
-  const protectedDir = getProtectedDir();
+  const protectedDir = path.join(process.cwd(), "public", "protected-docs");
 
-  if (!protectedDir) {
-    console.error("Protected directory not found. Searched from:", process.cwd());
+  if (!fs.existsSync(protectedDir)) {
+    console.error("Directory not found at:", protectedDir);
     return NextResponse.json(
-      { error: "Protected documents folder not found on server" },
+      { error: "Protected documents directory not found on server" },
       { status: 404 }
     );
   }

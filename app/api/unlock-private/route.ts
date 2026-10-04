@@ -2,6 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 import fs from "fs";
 import path from "path";
 
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
+
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
@@ -14,19 +17,16 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Server authentication error" }, { status: 500 });
     }
 
-    // Verify secret passkey
     if (!passkey || String(passkey).trim() !== String(expectedKey).trim()) {
       return NextResponse.json({ error: "Incorrect passkey." }, { status: 401 });
     }
 
-    // If only verifying password (unlocking the view)
     if (!fileName) {
       return NextResponse.json({ success: true });
     }
 
-    // Sanitize fileName to allow subfolders while preventing directory traversal attacks
     const cleanPath = path.normalize(String(fileName)).replace(/^(\.\.(\/|\\|$))+/, "");
-    const targetPath = path.join(process.cwd(), "protected-docs", cleanPath);
+    const targetPath = path.join(process.cwd(), "public", "protected-docs", cleanPath);
 
     if (!fs.existsSync(targetPath)) {
       return NextResponse.json(
@@ -36,17 +36,19 @@ export async function POST(req: NextRequest) {
     }
 
     const fileBuffer = fs.readFileSync(targetPath);
-    const uint8Array = new Uint8Array(fileBuffer);
-    const isImage = cleanPath.endsWith(".webp") || cleanPath.endsWith(".png") || cleanPath.endsWith(".jpg");
+    const cleanFileName = path.basename(cleanPath);
+    const isImage = cleanFileName.endsWith(".webp") || cleanFileName.endsWith(".png") || cleanFileName.endsWith(".jpg");
 
-    return new Response(uint8Array, {
+    return new Response(fileBuffer, {
       status: 200,
       headers: {
         "Content-Type": isImage ? "image/webp" : "application/pdf",
-        "Content-Disposition": `inline; filename="${path.basename(cleanPath)}"`,
+        "Content-Disposition": `inline; filename="${cleanFileName}"`,
+        "Content-Length": fileBuffer.length.toString(),
       },
     });
-  } catch {
+  } catch (error) {
+    console.error("Unlock Error:", error);
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }
