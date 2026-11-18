@@ -1,3 +1,7 @@
+// ==========================================
+// Type Definitions
+// ==========================================
+
 export interface EducationItem {
   title: string;
   institution: string;
@@ -16,9 +20,12 @@ export interface CertificateItem {
 export interface ExperienceItem {
   position: string;
   company: string;
-  period: string;
+  employmentType?: string; // e.g. "Full-time" or "Part-time"
+  period: string;          // e.g. "May 2023 - Present · 3 yrs 6 mos"
+  status?: string;          // e.g. "Present"
   icon: string;
-  description: string;
+  description?: string;
+  bullets?: string[];      // Multiple bullet points like LinkedIn
 }
 
 export interface RecommendedCompanyItem {
@@ -33,6 +40,12 @@ export interface OtherExperienceItem {
   details: string;
 }
 
+export interface ClientLogoItem {
+  name: string;
+  logo: string; // Path inside public/icons/companies/
+  url?: string; // Optional website link
+}
+
 export interface CaseStudyItem {
   title: string;
   description: string;
@@ -40,11 +53,10 @@ export interface CaseStudyItem {
   figma: string;
 }
 
-// Private Files Directory
 export interface PrivateFileItem {
   name: string;
   type: "pdf" | "image";
-  file: string; // The confidential filename served via your protected API route
+  file: string; // Exact filename served via protected route
   size?: string;
 }
 
@@ -70,6 +82,10 @@ export interface PersonalProjectItem {
   status: "Live" | "Coming Soon";
 }
 
+// ==========================================
+// Portfolio Data
+// ==========================================
+
 export const portfolioData = {
   personal: {
     name: "Momin Hassan",
@@ -79,9 +95,9 @@ export const portfolioData = {
     projects: "250+ Fiverr Projects",
     location: "Pakistan",
     availability: "Available for opportunities",
-    avatar: "/profile.webp", // WebP photograph
-    wallpaper: "/wallpaper.webp", // WebP desktop wallpaper
-    resumeFile: "/resume/Momin-Hassan-Resume.pdf", // PDF document
+    avatar: "/profile.webp",
+    wallpaper: "/wallpaper.webp",
+    resumeFile: "/resume/Momin-Hassan-Resume.pdf",
     bio: [
       "I’m a UI/UX & Product Designer with 5+ years of experience transitioning into Data Engineering.",
       "Designed and contributed to 150+ apps and 30+ websites, working with developers, product managers, and cross-functional teams.",
@@ -105,22 +121,18 @@ export const portfolioData = {
       year: "30 Sep, 2019 – 02 Apr, 2023 (4 Year)",
       type: "4 Year Degree",
     },
-
     {
       title: "Intermediate - FSC (Pre-Engineering)",
       institution: "Abdul Salam Groups of Colleges",
       year: "01 Sep, 2017 – 10 Sep, 2019 (2 Year)",
       type: "2 Year Degree",
     },
-
     {
       title: "Matriculation - Science",
       institution: "Anmol Public High School",
       year: "01 Apr, 2015 – 10 Aug, 2017 (2 Year)",
       type: "2 Year Degree",
     },
-
-
   ] as EducationItem[],
 
   certificates: [
@@ -129,77 +141,99 @@ export const portfolioData = {
       institution: "Pakistan Software Export Board (PSEB) - Ministry of IT & Telecom",
       year: "Valid until Aug 2027",
       type: "Certificate",
-      file: "/certificates/PSEB Freelancer Certificate.pdf", // PDF
+      file: "/certificates/PSEB Freelancer Certificate.pdf",
     },
-
     {
       title: "Python for Data Science, AI & Development",
       institution: "Coursera / IBM",
       year: "Apr 2026",
       type: "Certificate",
-      file: "/certificates/python-data-science.pdf", // PDF
+      file: "/certificates/python-data-science.pdf",
     },
     {
       title: "Foundations of Project Management",
       institution: "Coursera / Google",
       year: "Sep 2025",
       type: "Certificate",
-      file: "/certificates/project-management.pdf", // PDF
+      file: "/certificates/project-management.pdf",
     },
     {
       title: "Developing Innovative Ideas for Product Leaders",
       institution: "University of Maryland, College Park",
       year: "Jan 2024",
       type: "Certificate",
-      file: "/certificates/innovative-ideas.pdf", // PDF
+      file: "/certificates/innovative-ideas.pdf",
     },
     {
       title: "Using AI in the UX Process",
       institution: "LinkedIn",
       year: "Nov 2024",
       type: "Certificate",
-      file: "/certificates/ai-ux-design.pdf", // PDF
+      file: "/certificates/ai-ux-design.pdf",
     },
     {
       title: "Agile User Experience Design and Research",
       institution: "LinkedIn",
       year: "Oct 2024",
       type: "Certificate",
-      file: "/certificates/agile-ux.pdf", // PDF
+      file: "/certificates/agile-ux.pdf",
     },
     {
       title: "Systems Thinking for Product Designers",
       institution: "LinkedIn",
       year: "Oct 2024",
       type: "Certificate",
-      file: "/certificates/systems-thinking.pdf", // PDF
+      file: "/certificates/systems-thinking.pdf",
     },
   ] as CertificateItem[],
 
   experience: {
-    // Category 1: Professional Experience (with dates & roles)
+    // Category 1: Professional Experience (matches ExperienceItem[])
     professional: [
       {
-        position: "UX/UI Designer",
+        position: "UI/UX Designer - Freelance",
         company: "Fiverr",
-        period: "Jul 2021 – Present",
+        employmentType: "Full-time",
+        period: "May 2023 – Present · 3 yrs 6 mos",
+        status: "Present",
         icon: "/icons/companies/fiverr.svg",
         description:
-          "Completed 250+ projects while maintaining a consistent 5-star client rating. Achieved Level-2 Seller status and collaborated with diverse clients to understand requirements and deliver tailored UX/UI solutions.",
+          "Completed 250+ projects while maintaining a consistent 5-star client rating. Collaborated with founders, developers, and product teams delivering 150+ mobile apps and 30+ websites",
+      },
+      {
+        position: "UI/UX Designer - Freelance",
+        company: "Fiverr",
+        employmentType: "Part-time",
+        period: "Jul 2021 – Apr 2023 · 1 yr 10 mos",
+        icon: "/icons/companies/fiverr.svg",
+        description:
+          "Provided Part-time freelance UI/UX design services alongside completing undergraduate studies (BS Computer Science).",
       },
     ] as ExperienceItem[],
 
-    // Category 2: Companies Who Recommend Me (focused on company & recommendation details)
+    // 2- 4-per-row client logos (stored in public/icons/companies/*.webp)
+    
+    clientLogos: [
+      { name: "Olive Dating LLC", logo: "/icons/companies/olive-dating.webp" },
+      { name: "HDIDA AUTO", logo: "/icons/companies/hdida-auto.webp" },
+      { name: "CLIENTMENT OÜ", logo: "/icons/companies/clientment.webp" },
+      { name: "Foodsply Inc.", logo: "/icons/companies/FoodSply.webp" },
+      { name: "BasketBallist", logo: "/icons/companies/client-5.webp" },
+      { name: "WellScape", logo: "/icons/companies/client-6.webp" },
+      { name: "InventoryBase", logo: "/icons/companies/client-7.webp" },
+      { name: "Rythmia Life Advancment Centre", logo: "/icons/companies/client-8.webp" },
+      { name: "4Plastic Inc.", logo: "/icons/companies/client-9.webp" },
+      { name: "Scenic Air Safaris Ltd.", logo: "/icons/companies/client-10.webp" },
+      { name: "Espresso Computing Inc.", logo: "/icons/companies/client-11.webp" },
+      { name: "Groppr App", logo: "/icons/companies/client-12.webp" },
+      { name: "Performall GmbH", logo: "/icons/companies/client-13.webp" },
+      { name: "Real Italian Resturant", logo: "/icons/companies/client-14.webp" },
+      { name: "Expaty.com", logo: "/icons/companies/client-15.webp" },
+      { name: "20Lab.app", logo: "/icons/companies/client-16.webp" },
+    ] as ClientLogoItem[],
+
+    // Category 2: Companies Who Recommend Me (matches RecommendedCompanyItem[])
     recommended: [
-
-      {
-        title: "Systems Thinking for Product Designers",
-        institution: "LinkedIn",
-        year: "Oct 2024",
-        type: "Certificate",
-        file: "/certificates/systems-thinking.pdf", // PDF
-      },
-
       {
         name: "Olive Dating LLC",
         icon: "/icons/companies/olive-dating.svg",
@@ -214,27 +248,16 @@ export const portfolioData = {
       },
       {
         name: "Clientment",
-        icon: "/icons/companies/clientment.svg", // Add SVG into public/icons/companies/
+        icon: "/icons/companies/clientment.svg",
         description:
           "Designed comprehensive digital design systems and client-facing web workflows.",
       },
     ] as RecommendedCompanyItem[],
 
-    // Category 3: Other Experience / Notable Engagements (simplified list)
+    // Category 3: Other Experience / Notable Engagements (matches OtherExperienceItem[])
     other: [
-      {
-        name: "Technolangs IT Training Institute",
-        role: "UI/UX Practice",
-        details: "Internship focused on design practice and workflows.",
-      },
-      {
-        name: "GFX Mentor",
-        role: "Design Tools",
-        details: "Intensive training across core design tools and creative suites.",
-      },
     ] as OtherExperienceItem[],
   },
-
 
   uiux: {
     title: "UI/UX Portfolio",
@@ -248,24 +271,22 @@ export const portfolioData = {
       {
         title: "AI Healthcare - Case Study",
         description: "Mobile app design and detailed case study for a health and wellness.",
-        image: "/uiux/case-studies/featured-1.webp", // WebP
+        image: "/uiux/case-studies/featured-1.webp",
         figma: "https://www.figma.com/proto/EiZ7i54HIubTA1TUawjFgU/Halsa-App-Case-Study?node-id=18-2&viewport=-973%2C450%2C0.57&t=wYnUR5rhPmLaWoCY-1&scaling=min-zoom&content-scaling=fixed&page-id=0%3A1",
       },
       {
         title: "Rail Guide - Case Study",
         description: "Mobile app for a railway station navigation & information platform.",
-        image: "/uiux/case-studies/featured-2.webp", // WebP
+        image: "/uiux/case-studies/featured-2.webp",
         figma: "https://www.figma.com/proto/D26CmP2qFkZUUkrhgPVdck/RailGuide-App-Case-Study?node-id=1-2&p=f&viewport=575%2C249%2C0.45&t=3K72zCPlruiIZ0gE-1&scaling=min-zoom&content-scaling=fixed&page-id=0%3A1",
       },
       {
         title: "Sticky on web - Case Study",
         description: "Web extension for a productivity & note-taking while browsing.",
-        image: "/uiux/case-studies/featured-3.webp", // WebP
+        image: "/uiux/case-studies/featured-3.webp",
         figma: "https://www.figma.com/proto/TleReuoUJwXmdAmAn6FaLT/Stiq-Web-Extension---Case-Study?node-id=1-5&viewport=463%2C231%2C0.44&t=ByQevYvxGXhm0cJW-1&scaling=min-zoom&content-scaling=fixed&page-id=0%3A1",
       }
     ] as CaseStudyItem[],
-    // Generates work-1.webp through work-20.webp
-
     images: [
       "/uiux/visual-portfolio/work-1.webp",
       "/uiux/visual-portfolio/work-2.webp",
@@ -275,7 +296,6 @@ export const portfolioData = {
       "/uiux/visual-portfolio/work-6.webp",
       "/uiux/visual-portfolio/work-7.webp",
       "/uiux/visual-portfolio/work-8.webp",
-      // "/uiux/visual-portfolio/work-9.webp",
       "/uiux/visual-portfolio/work-10.webp",
       "/uiux/visual-portfolio/work-11.webp",
       "/uiux/visual-portfolio/work-12.webp",
@@ -306,14 +326,13 @@ export const portfolioData = {
       "/uiux/visual-portfolio/work-37.webp",
       "/uiux/visual-portfolio/work-38.webp",
       "/uiux/visual-portfolio/work-39.webp",
-      //"/uiux/visual-portfolio/work-40.webp",
       "/uiux/visual-portfolio/work-41.webp",
       "/uiux/visual-portfolio/work-42.webp",
       "/uiux/visual-portfolio/work-43.webp",
       "/uiux/visual-portfolio/work-44.webp",
       "/uiux/visual-portfolio/work-45.webp",
       "/uiux/visual-portfolio/work-46.webp",
-    ] as string[], // <-- Add 'as string[]' here
+    ] as string[],
   },
 
   dataEngineering: {
@@ -364,7 +383,7 @@ export const portfolioData = {
     {
       title: "Stiq - Web Extension",
       description: "Personal product and entrepreneurial idea currently in development.",
-      image: "/personal-projects/project-1.webp", // WebP
+      image: "/personal-projects/project-1.webp",
       link: "#",
       status: "Coming Soon",
     },
@@ -384,11 +403,10 @@ export const portfolioData = {
     "Data Science",
   ],
 
-  // Private Files
   privateFiles: {
     title: "Confidential Documents",
     description: "Verified identity records, academic credentials, and official certificates.",
-    zipDownloadUrl: "/api/download-profile-zip",
+    zipDownloadUrl: "/api/unlock-private?zip=1",
     categories: [
       {
         categoryName: "Academic & Education",
@@ -396,7 +414,7 @@ export const portfolioData = {
           {
             name: "Matriculation Certificate",
             type: "pdf",
-            file: "Matric front and back.pdf", // <-- Exact file name in protected-docs/
+            file: "Matric front and back.pdf",
             size: "In Science"
           },
           {
@@ -414,54 +432,46 @@ export const portfolioData = {
           {
             name: "Bachelors Transcript",
             type: "pdf",
-            file: "Bachelors_Transcript.pdf",
+            file: "BSCS Transcript.pdf",
             size: "BSCS"
           },
         ],
       },
-
       {
         categoryName: "Identity & Licenses",
         files: [
-
           {
             name: "ID Card",
             type: "pdf",
             file: "ID Card Front-Back.pdf",
             size: "Valid until 2033"
           },
-
           {
             name: "Passport",
             type: "pdf",
             file: "Passport.pdf",
             size: "Valid until 2033"
           },
-
           {
             name: "Driving License",
             type: "pdf",
             file: "Driving_License.pdf",
             size: "Not Yet Issued"
           },
-
           {
             name: "Birth Certificate",
             type: "pdf",
             file: "Birth Certificate.pdf",
             size: ""
           },
-
           {
             name: "Domicile Certificate",
             type: "pdf",
             file: "Domicile.pdf",
             size: ""
           },
-
         ],
       },
-
       {
         categoryName: "University Letters",
         files: [
@@ -471,14 +481,12 @@ export const portfolioData = {
             file: "Dr. Abdul Rauf - Rec Letter.pdf",
             size: ""
           },
-
           {
             name: "From Dr. Majid",
             type: "pdf",
             file: "Dr. Majid - Rec Letter.pdf",
             size: ""
           },
-
           {
             name: "University Bonafide Letter",
             type: "pdf",
@@ -487,34 +495,24 @@ export const portfolioData = {
           },
         ],
       },
-
       {
         categoryName: "Work Recommendations Letters",
         files: [
           {
             name: "Clientment Recommendation Letter",
             type: "pdf",
-            file: "FBR_Certificate.pdf",
+            file: "Clientment Recommendation Letter.pdf",
             size: ""
           },
-
           {
             name: "Olive Dating LLC Recommendation Letter",
             type: "pdf",
             file: "Olive Dating LLC Recommendation Letter.pdf",
             size: ""
           },
-
-          {
-            name: "HDIDA AUTO Recommendation Letter",
-            type: "pdf",
-            file: "HDIDA AUTO Recommendation Letter.pdf",
-            size: ""
-          },
-
+      
         ],
       },
-
       {
         categoryName: "Official Profile Photos",
         files: [
@@ -532,7 +530,6 @@ export const portfolioData = {
           },
         ],
       },
-    ],
+    ] as PrivateCategory[],
   },
 };
-

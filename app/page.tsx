@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import Image from "next/image";
 import {
   UserRound,
   GraduationCap,
@@ -33,7 +34,6 @@ import {
   Image as ImageIcon,
   FolderArchive,
   Eye,
-  KeyRound,
   CheckCircle2,
   Trash2,
 } from "lucide-react";
@@ -67,7 +67,6 @@ const sections: Section[] = [
   { id: "personal", name: "Personal Projects", icon: "/icons/sidebar/personal.svg", fallbackIcon: Rocket },
   { id: "private", name: "Private Files", icon: "/icons/sidebar/private.svg", fallbackIcon: LockKeyhole, locked: true },
 ];
-
 
 export default function Home() {
   const [activeSection, setActiveSection] = useState("about");
@@ -136,7 +135,6 @@ export default function Home() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Multi-window Preview Handler (Staggers new windows so they don't stack directly on top)
   const openPreview = (title: string, url: string, isImage?: boolean) => {
     const id = `${url}-${Date.now()}`;
     const offsetIndex = previewWindows.length % 5;
@@ -175,11 +173,11 @@ export default function Home() {
       onMouseUp={stopDragging}
       onMouseLeave={stopDragging}
     >
-      {/* MENU BAR */}
+      {/* MAC MENU BAR */}
       <div className="mac-menu-bar">
         <div className="menu-left">
-          <span className="apple-logo"></span>
-          <span className="menu-active">Finder</span>
+          <span className="apple-logo font-semibold"></span>
+          <span className="menu-active font-semibold">Finder</span>
           <span>File</span>
           <span>Edit</span>
           <span>View</span>
@@ -209,7 +207,7 @@ export default function Home() {
       {/* FINDER WINDOW */}
       <div
         ref={windowRef}
-        className="finder-window"
+        className="finder-window border border-black/10 dark:border-white/15"
         style={{
           transform: `translate(calc(-50% + ${windowPosition.x}px), calc(-50% + ${windowPosition.y}px))`,
         }}
@@ -223,7 +221,7 @@ export default function Home() {
 
           <div className="window-title">
             <Folder size={15} />
-            <span>{active?.name}</span>
+            <span className="font-medium text-neutral-800 dark:text-neutral-200">{active?.name}</span>
           </div>
 
           <div className="window-actions" onMouseDown={(e) => e.stopPropagation()}>
@@ -249,13 +247,15 @@ export default function Home() {
                 )}
               </div>
               <div className="mini-profile-info">
-                <strong>{portfolioData.personal.name}</strong>
-                <span>{portfolioData.personal.profession}</span>
+                <strong className="text-sm font-semibold">{portfolioData.personal.name}</strong>
+                <span className="text-xs text-neutral-500 dark:text-neutral-400">{portfolioData.personal.profession}</span>
               </div>
             </div>
 
             <div className="sidebar-section">
-              <p className="sidebar-heading">PORTFOLIO</p>
+              <p className="sidebar-heading text-[11px] font-semibold text-neutral-400 dark:text-neutral-500 tracking-wider">
+                PORTFOLIO
+              </p>
               {sections.map((section) => {
                 const Fallback = section.fallbackIcon;
                 const isActive = activeSection === section.id;
@@ -279,30 +279,32 @@ export default function Home() {
                       <Fallback size={17} />
                     </span>
 
-                    <span>{section.name}</span>
+                    <span className="text-xs font-medium">{section.name}</span>
                   </button>
                 );
               })}
             </div>
 
             <div className="sidebar-section sidebar-contact">
-              <p className="sidebar-heading">CONTACT</p>
-              <div className="location-item">
-                <Mail size={16} />
-                <span>{portfolioData.contact.email}</span>
+              <p className="sidebar-heading text-[11px] font-semibold text-neutral-400 dark:text-neutral-500 tracking-wider">
+                CONTACT
+              </p>
+              <div className="location-item text-xs">
+                <Mail size={15} />
+                <span className="truncate">{portfolioData.contact.email}</span>
               </div>
-              <div className="location-item">
-                <Globe size={16} />
+              <div className="location-item text-xs">
+                <Globe size={15} />
                 <span>{portfolioData.contact.location}</span>
               </div>
-              <div className="location-item">
-                <MapPin size={16} />
+              <div className="location-item text-xs">
+                <MapPin size={15} />
                 <span>{portfolioData.contact.phone}</span>
               </div>
             </div>
 
             <div className="sidebar-footer">
-              <button>
+              <button className="text-xs font-medium">
                 <Settings size={15} />
                 Settings
               </button>
@@ -314,14 +316,14 @@ export default function Home() {
           </section>
         </div>
 
-        <footer className="status-bar">
+        <footer className="status-bar text-xs text-neutral-500 border-t border-black/[0.06] dark:border-white/[0.08]">
           <span>{active?.name}</span>
           <span>{portfolioData.personal.availability}</span>
         </footer>
       </div>
+
       {/* DOCK */}
-      <div className="dock">
-        {/* Finder */}
+      <div className="dock border border-white/20 dark:border-white/10">
         <button className="dock-item" onClick={() => openSection("about")} title="Finder">
           <img
             src="/icons/dock/finder.webp"
@@ -336,7 +338,6 @@ export default function Home() {
           <Folder size={26} className="hidden" />
         </button>
 
-        {/* Resume */}
         <button
           className="dock-item"
           onClick={() => openPreview("Momin Hassan - Resume", portfolioData.personal.resumeFile)}
@@ -355,7 +356,6 @@ export default function Home() {
           <FileText size={26} className="hidden" />
         </button>
 
-        {/* UI/UX Portfolio */}
         <button className="dock-item" onClick={() => openSection("uiux")} title="UI/UX Portfolio">
           <img
             src="/icons/dock/uiux.webp"
@@ -370,7 +370,6 @@ export default function Home() {
           <Palette size={26} className="hidden" />
         </button>
 
-        {/* Data Engineering */}
         <button className="dock-item" onClick={() => openSection("data")} title="Data Engineering">
           <img
             src="/icons/dock/data.webp"
@@ -385,10 +384,8 @@ export default function Home() {
           <Database size={26} className="hidden" />
         </button>
 
-        {/* Separator 1 */}
         <div className="dock-separator"></div>
 
-        {/* GitHub */}
         <a className="dock-item" href={portfolioData.contact.github} target="_blank" rel="noopener noreferrer" title="GitHub">
           <img
             src="/icons/dock/github.webp"
@@ -403,7 +400,6 @@ export default function Home() {
           <Code2 size={24} className="hidden" />
         </a>
 
-        {/* LinkedIn */}
         <a className="dock-item" href={portfolioData.contact.linkedin} target="_blank" rel="noopener noreferrer" title="LinkedIn">
           <img
             src="/icons/dock/linkedin.webp"
@@ -418,7 +414,6 @@ export default function Home() {
           <Globe size={24} className="hidden" />
         </a>
 
-        {/* Fiverr */}
         <a className="dock-item" href={portfolioData.contact.fiverr} target="_blank" rel="noopener noreferrer" title="Fiverr">
           <img
             src="/icons/dock/fiverr.webp"
@@ -433,15 +428,9 @@ export default function Home() {
           <CheckCircle2 size={26} className="hidden" />
         </a>
 
-        {/* macOS TRASH SEPARATOR */}
         <div className="dock-separator"></div>
 
-        {/* TRASH / BIN ICON */}
-        <button
-          className="dock-item"
-          title="Trash"
-          onClick={() => alert("Trash is empty.")}
-        >
+        <button className="dock-item" title="Trash" onClick={() => alert("Trash is empty.")}>
           <img
             src="/icons/dock/trash.webp"
             alt="Trash"
@@ -456,8 +445,7 @@ export default function Home() {
         </button>
       </div>
 
-
-      {/* MULTI-WINDOW PREVIEW MANAGER (NON-BLOCKING DESKTOP) */}
+      {/* MULTI-WINDOW PREVIEW MANAGER */}
       {previewWindows.map((win) => (
         <DraggablePreviewModal
           key={win.id}
@@ -494,82 +482,90 @@ function About({ onPreview }: { onPreview: (title: string, url: string) => void 
   const [imgError, setImgError] = useState(false);
 
   return (
-    <div className="content-inner">
-      <div className="profile-header">
-        <div className="profile-photo">
+    <div className="content-inner space-y-6">
+      <div className="profile-header flex items-center gap-5">
+        <div className="w-20 h-20 rounded-2xl overflow-hidden flex items-center justify-center shrink-0">
           {!imgError ? (
             <img
               src={portfolioData.personal.avatar}
               alt={portfolioData.personal.name}
+              className="w-full h-full object-cover"
               onError={() => setImgError(true)}
             />
           ) : (
-            <span>MH</span>
+            <span className="text-xl font-bold text-neutral-600 dark:text-neutral-300">MH</span>
           )}
         </div>
 
         <div>
-          <p className="eyebrow">PERSONAL FILE</p>
-          <h1>{portfolioData.personal.name}</h1>
-          <p className="subtitle">{portfolioData.personal.role}</p>
+          <p className="eyebrow text-xs font-semibold tracking-wider uppercase text-neutral-400">PERSONAL FILE</p>
+          <h1 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100">{portfolioData.personal.name}</h1>
+          <p className="subtitle text-sm text-neutral-600 dark:text-neutral-300 mt-0.5">{portfolioData.personal.role}</p>
         </div>
       </div>
 
-      <div className="info-grid">
-        <div className="info-card">
-          <span>Current Focus</span>
-          <strong>{portfolioData.personal.profession}</strong>
-        </div>
-        <div className="info-card">
-          <span>Design Experience</span>
-          <strong>{portfolioData.personal.experience}</strong>
-        </div>
-        <div className="info-card">
-          <span>Design Projects</span>
-          <strong>{portfolioData.personal.projects}</strong>
-        </div>
-        <div className="info-card">
-          <span>Location</span>
-          <strong>{portfolioData.personal.location}</strong>
-        </div>
-      </div>
-
-      <div className="text-section">
-        <h2>About Me</h2>
-        {portfolioData.personal.bio.map((paragraph, index) => (
-          <p key={index}>{paragraph}</p>
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        {[
+          { label: "Current Focus", val: portfolioData.personal.profession },
+          { label: "Design Experience", val: portfolioData.personal.experience },
+          { label: "Design Projects", val: portfolioData.personal.projects },
+          { label: "Location", val: portfolioData.personal.location },
+        ].map((item, idx) => (
+          <div
+            key={idx}
+            className="p-4 rounded-xl border border-black/[0.08] dark:border-white/[0.1] bg-white/60 dark:bg-neutral-800/50 backdrop-blur-md flex flex-col justify-between"
+          >
+            <span className="text-xs font-medium text-neutral-400 dark:text-neutral-500 uppercase tracking-wide">
+              {item.label}
+            </span>
+            <strong className="text-sm font-semibold text-neutral-900 dark:text-neutral-100 mt-1">
+              {item.val}
+            </strong>
+          </div>
         ))}
       </div>
 
-      <div className="mt-8 p-4 bg-slate-50 border border-slate-200 rounded-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center">
+      <div className="p-6 rounded-2xl border border-black/[0.08] dark:border-white/[0.1] bg-white/60 dark:bg-neutral-800/40 backdrop-blur-md space-y-3">
+        <h2 className="text-sm font-semibold text-neutral-900 dark:text-neutral-100 tracking-wide uppercase">
+          About Me
+        </h2>
+        {portfolioData.personal.bio.map((paragraph, index) => (
+          <p key={index} className="text-sm text-neutral-700 dark:text-neutral-300 leading-relaxed">
+            {paragraph}
+          </p>
+        ))}
+      </div>
+
+      {/* Resume Banner */}
+      <div className="p-4 rounded-2xl border border-black/[0.08] dark:border-white/[0.1] bg-white/60 dark:bg-neutral-800/40 backdrop-blur-md flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div className="flex items-center gap-3.5">
+          <div className="w-11 h-11 rounded-xl bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 border border-blue-200/50 dark:border-blue-800/50 flex items-center justify-center shrink-0">
             <FileText size={22} />
           </div>
           <div>
-            <h4 className="text-xs font-semibold text-slate-800 m-0">Curriculum Vitae (Resume)</h4>
-            <p className="text-[11px] text-slate-500 m-0">Latest updated resume • PDF</p>
+            <h4 className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">Curriculum Vitae (Resume)</h4>
+            <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-0.5">Latest updated resume • Official PDF</p>
           </div>
         </div>
         <div className="flex items-center gap-2 w-full sm:w-auto">
           <button
             onClick={() => onPreview("Resume - Momin Hassan", portfolioData.personal.resumeFile)}
-            className="action-btn-primary flex-1 sm:flex-none justify-center"
+            className="action-btn-primary flex-1 sm:flex-none justify-center text-xs font-medium py-2 px-3.5"
           >
-            <Eye size={13} /> Preview
+            <Eye size={14} /> Preview
           </button>
           <a
             href={portfolioData.personal.resumeFile}
             download="Momin-Hassan-Resume.pdf"
-            className="action-btn-secondary flex-1 sm:flex-none justify-center"
+            className="action-btn-secondary flex-1 sm:flex-none justify-center text-xs font-medium py-2 px-3.5"
           >
-            <Download size={13} /> Download
+            <Download size={14} /> Download
           </a>
         </div>
       </div>
 
-      <div className="availability">
-        <div className="availability-dot"></div>
+      <div className="availability inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-black/[0.08] dark:border-white/[0.1] bg-white/40 dark:bg-neutral-800/40 text-xs font-medium text-neutral-700 dark:text-neutral-300">
+        <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
         <span>{portfolioData.personal.availability}</span>
       </div>
     </div>
@@ -579,11 +575,40 @@ function About({ onPreview }: { onPreview: (title: string, url: string) => void 
 /* EDUCATION */
 function Education() {
   return (
-    <div className="content-inner">
-      <PageHeader eyebrow="EDUCATION" title="Education" description="Academic background and degrees." />
-      <div className="finder-files">
+    <div className="content-inner space-y-6">
+      <PageHeader
+        eyebrow="EDUCATION"
+        title="Education"
+        description="Academic background and degrees."
+      />
+      <div className="space-y-4">
         {portfolioData.education.map((item, index) => (
-          <FileRow key={index} icon={<GraduationCap />} name={item.title} details={item.institution} date={item.year} />
+          <div
+            key={index}
+            className="p-5 rounded-2xl border border-black/[0.08] dark:border-white/[0.1] bg-white/60 dark:bg-neutral-800/40 backdrop-blur-md"
+          >
+            <div className="flex items-start gap-4">
+              {/* Education Icon */}
+              <div className="w-12 h-12 rounded-xl bg-neutral-100 dark:bg-neutral-700/60 flex items-center justify-center shrink-0 border border-black/[0.06] dark:border-white/[0.08] text-neutral-700 dark:text-neutral-200">
+                <GraduationCap size={22} />
+              </div>
+
+              {/* Header with Title on Left, Date on Right (Matches Experience) */}
+              <div className="flex-1 min-w-0">
+                <div className="flex items-baseline justify-between gap-2 flex-wrap">
+                  <h3 className="text-base font-semibold text-neutral-900 dark:text-neutral-100 leading-snug">
+                    {item.title}
+                  </h3>
+                  <span className="text-xs font-normal text-neutral-500 dark:text-neutral-400">
+                    {item.year}
+                  </span>
+                </div>
+                <p className="text-sm font-medium text-neutral-700 dark:text-neutral-300 mt-1">
+                  {item.institution}
+                </p>
+              </div>
+            </div>
+          </div>
         ))}
       </div>
     </div>
@@ -593,22 +618,32 @@ function Education() {
 /* CERTIFICATES */
 function Certificates({ onPreview }: { onPreview: (title: string, url: string) => void }) {
   return (
-    <div className="content-inner">
-      <PageHeader eyebrow="CREDENTIALS" title="Certificates" description="Click any certificate to open macOS Preview window." />
-      <div className="finder-files">
+    <div className="content-inner space-y-6">
+      <PageHeader eyebrow="CREDENTIALS" title="Certificates" description="Click any certificate to inspect in macOS Preview." />
+      <div className="space-y-3">
         {portfolioData.certificates.map((item, index) => (
           <div
             key={index}
             onClick={() => onPreview(item.title, item.file)}
-            className="finder-file-row"
+            className="p-4 rounded-xl border border-black/[0.08] dark:border-white/[0.1] bg-white/60 dark:bg-neutral-800/40 backdrop-blur-md flex items-center justify-between gap-4 cursor-pointer hover:border-black/20 dark:hover:border-white/25 transition-all group"
           >
-            <div className="finder-file-icon"><Award size={20} /></div>
-            <div className="finder-file-name">
-              <strong>{item.title}</strong>
-              <span>{item.institution}</span>
+            <div className="flex items-center gap-3.5 min-w-0">
+              <div className="w-10 h-10 rounded-xl bg-neutral-100 dark:bg-neutral-700/60 flex items-center justify-center shrink-0 border border-black/[0.06] dark:border-white/[0.08] text-neutral-700 dark:text-neutral-200 group-hover:text-blue-500 transition-colors">
+                <Award size={20} />
+              </div>
+              <div className="min-w-0">
+                <strong className="text-sm font-semibold text-neutral-900 dark:text-neutral-100 block truncate group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                  {item.title}
+                </strong>
+                <span className="text-xs text-neutral-500 dark:text-neutral-400 block mt-0.5">
+                  {item.institution}
+                </span>
+              </div>
             </div>
-            <span className="finder-file-date">{item.year}</span>
-            <Eye size={15} className="row-more" />
+            <div className="flex items-center gap-3 shrink-0">
+              <span className="text-xs text-neutral-500 dark:text-neutral-400 font-medium">{item.year}</span>
+              <Eye size={15} className="text-neutral-400 group-hover:text-neutral-700 dark:group-hover:text-neutral-200 transition-colors" />
+            </div>
           </div>
         ))}
       </div>
@@ -618,10 +653,11 @@ function Certificates({ onPreview }: { onPreview: (title: string, url: string) =
 
 /* EXPERIENCE */
 function Experience() {
-  const { professional, recommended, other } = portfolioData.experience;
+  const { professional, recommended, other } = portfolioData.experience as any;
+  const clientLogos = (portfolioData.experience as any)?.clientLogos;
 
   return (
-    <div className="content-inner">
+    <div className="content-inner space-y-8">
       <PageHeader
         eyebrow="WORK HISTORY"
         title="Experience"
@@ -629,82 +665,178 @@ function Experience() {
       />
 
       {/* 1. PROFESSIONAL EXPERIENCE */}
-      <div className="mb-8">
-        <h2 className="section-title">Professional Experience</h2>
+      <div>
+        <h2 className="section-title mb-3 text-sm font-semibold uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
+          Professional Experience
+        </h2>
         <div className="space-y-4">
-          {professional.map((item, index) => (
-            <div className="experience-card" key={index}>
-              <div className="experience-icon overflow-hidden bg-slate-100 p-2">
-                <img
-                  src={item.icon}
-                  alt={item.company}
-                  className="w-full h-full object-contain"
-                  onError={(e) => {
-                    (e.target as HTMLElement).style.display = "none";
-                    const sibling = (e.target as HTMLElement).nextElementSibling;
-                    if (sibling) (sibling as HTMLElement).style.display = "block";
-                  }}
-                />
-                <span className="hidden">
-                  <BriefcaseBusiness size={20} />
-                </span>
-              </div>
-              <div>
-                <h3>{item.position}</h3>
-                <p>{item.company}</p>
-                <span>{item.period}</span>
-                <small>{item.description}</small>
+          {professional?.map((item: any, index: number) => (
+            <div
+              key={index}
+              className="p-5 rounded-2xl border border-black/[0.08] dark:border-white/[0.1] bg-white/60 dark:bg-neutral-800/40 backdrop-blur-md"
+            >
+              <div className="flex items-start gap-4">
+                <div className="w-12 h-12 rounded-xl bg-neutral-100 dark:bg-neutral-700/60 flex items-center justify-center shrink-0 border border-black/[0.06] dark:border-white/[0.08] p-2 overflow-hidden">
+                  <img
+                    src={item.icon}
+                    alt={item.company || item.position}
+                    className="w-full h-full object-contain"
+                    onError={(e) => {
+                      (e.target as HTMLElement).style.display = "none";
+                      const sibling = (e.target as HTMLElement).nextElementSibling;
+                      if (sibling) (sibling as HTMLElement).style.display = "flex";
+                    }}
+                  />
+                  <span className="hidden items-center justify-center text-neutral-500">
+                    <BriefcaseBusiness size={20} />
+                  </span>
+                </div>
+
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-baseline justify-between gap-2 flex-wrap">
+                    <h3 className="text-base font-semibold text-neutral-900 dark:text-neutral-100">
+                      {item.position}
+                    </h3>
+                    <span className="text-xs font-normal text-neutral-500 dark:text-neutral-400">
+                      {item.period}
+                    </span>
+                  </div>
+                  <p className="text-sm font-medium text-neutral-700 dark:text-neutral-300 mt-0.5">
+                    {item.company}
+                    {item.employmentType && (
+                      <span className="text-neutral-400 font-normal"> · {item.employmentType}</span>
+                    )}
+                  </p>
+
+                  {/* Bullet points if available */}
+                  {item.bullets && item.bullets.length > 0 ? (
+                    <ul className="mt-3 space-y-1.5 pl-1">
+                      {item.bullets.map((bullet: string, bIdx: number) => (
+                        <li key={bIdx} className="text-xs text-neutral-700 dark:text-neutral-300 flex items-start gap-2 leading-relaxed">
+                          <span className="text-neutral-400 select-none">▸</span>
+                          <span>{bullet}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : item.description ? (
+                    <p className="mt-2 text-xs text-neutral-700 dark:text-neutral-300 leading-relaxed">
+                      {item.description}
+                    </p>
+                  ) : null}
+                </div>
               </div>
             </div>
           ))}
         </div>
       </div>
 
-      {/* 2. COMPANIES WHO RECOMMEND ME */}
-      <div className="mb-8">
-        <h2 className="section-title">Companies Who Recommend Me</h2>
-        <div className="space-y-4">
-          {recommended.map((item, index) => (
-            <div className="experience-card" key={index}>
-              <div className="experience-icon overflow-hidden bg-slate-100 p-2">
-                <img
-                  src={item.icon}
-                  alt={item.name}
-                  className="w-full h-full object-contain"
-                  onError={(e) => {
-                    (e.target as HTMLElement).style.display = "none";
-                    const sibling = (e.target as HTMLElement).nextElementSibling;
-                    if (sibling) (sibling as HTMLElement).style.display = "block";
-                  }}
-                />
-                <span className="hidden">
-                  <BriefcaseBusiness size={20} />
+      {/* 2. CLIENTS & BRANDS WORKED WITH */}
+      {clientLogos && clientLogos.length > 0 && (
+        <div>
+          <h2 className="section-title mb-3 text-sm font-semibold uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
+            Clients & Brands Worked With
+          </h2>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            {clientLogos.map((client: any, idx: number) => (
+              <div
+                key={idx}
+                className="group flex flex-col items-center justify-between p-2.5 h-28 rounded-xl border border-black/[0.08] dark:border-white/[0.1] bg-white/60 dark:bg-neutral-800/40 backdrop-blur-md hover:border-black/20 dark:hover:border-white/20 transition-all"
+              >
+                {/* Maximized Logo Area */}
+                <div className="w-full flex-1 flex items-center justify-center min-h-0 px-1">
+                  <img
+                    src={client.logo}
+                    alt={client.name}
+                    className="h-14 sm:h-16 w-full max-w-[95%] object-contain grayscale opacity-85 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-200"
+                    onError={(e) => {
+                      (e.target as HTMLElement).style.display = "none";
+                    }}
+                  />
+                </div>
+
+                {/* Subtitle (-2 points: 9.5px) */}
+                <span className="mt-0.5 text-[9.5px] tracking-tight font-medium text-neutral-400 dark:text-neutral-500 text-center truncate max-w-full leading-tight select-none">
+                  {client.name}
                 </span>
               </div>
-              <div>
-                <h3>{item.name}</h3>
-                <small>{item.description}</small>
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
-      </div>
+      )}
 
-      {/* 3. OTHER EXPERIENCE */}
+      {/* 3. COMPANIES WHO RECOMMEND ME */}
+      {recommended && recommended.length > 0 && (
+        <div>
+          <h2 className="section-title mb-3 text-sm font-semibold uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
+            Companies Who Recommend Me
+          </h2>
+          <div className="space-y-3">
+            {recommended.map((item: any, index: number) => (
+              <div
+                key={index}
+                className="p-5 rounded-2xl border border-black/[0.08] dark:border-white/[0.1] bg-white/60 dark:bg-neutral-800/40 backdrop-blur-md"
+              >
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 rounded-xl bg-neutral-100 dark:bg-neutral-700/60 flex items-center justify-center shrink-0 border border-black/[0.06] dark:border-white/[0.08] p-2 overflow-hidden">
+                    <img
+                      src={item.icon}
+                      alt={item.name}
+                      className="w-full h-full object-contain"
+                      onError={(e) => {
+                        (e.target as HTMLElement).style.display = "none";
+                        const sibling = (e.target as HTMLElement).nextElementSibling;
+                        if (sibling) (sibling as HTMLElement).style.display = "flex";
+                      }}
+                    />
+                    <span className="hidden items-center justify-center text-neutral-500">
+                      <BriefcaseBusiness size={20} />
+                    </span>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h3 className="text-base font-semibold text-neutral-900 dark:text-neutral-100">
+                      {item.name}
+                    </h3>
+                    <p className="mt-1 text-xs text-neutral-700 dark:text-neutral-300 leading-relaxed">
+                      {item.description}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* 4. OTHER ENGAGEMENTS */}
       {other && other.length > 0 && (
-        <div className="mb-6">
-          <h2 className="section-title">Other Engagements</h2>
-          <div className="finder-files">
-            {other.map((item, index) => (
-              <div className="finder-file-row" key={index}>
-                <div className="finder-file-icon">
-                  <BriefcaseBusiness size={18} />
+        <div>
+          <h2 className="section-title mb-3 text-sm font-semibold uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
+            Other Engagements
+          </h2>
+          <div className="space-y-3">
+            {other.map((item: any, index: number) => (
+              <div
+                key={index}
+                className="p-4 rounded-xl border border-black/[0.08] dark:border-white/[0.1] bg-white/60 dark:bg-neutral-800/40 backdrop-blur-md flex items-center justify-between gap-4"
+              >
+                <div className="flex items-center gap-3.5 min-w-0">
+                  <div className="w-10 h-10 rounded-xl bg-neutral-100 dark:bg-neutral-700/60 flex items-center justify-center shrink-0 border border-black/[0.06] dark:border-white/[0.08] text-neutral-600 dark:text-neutral-300">
+                    <BriefcaseBusiness size={18} />
+                  </div>
+                  <div className="min-w-0">
+                    <h3 className="text-sm font-semibold text-neutral-900 dark:text-neutral-100 truncate">
+                      {item.name}
+                    </h3>
+                    <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-0.5">
+                      {item.details}
+                    </p>
+                  </div>
                 </div>
-                <div className="finder-file-name">
-                  <strong>{item.name}</strong>
-                  <span>{item.details}</span>
-                </div>
-                {item.role && <span className="finder-file-date">{item.role}</span>}
+                {item.role && (
+                  <span className="text-xs px-2.5 py-0.5 rounded-full bg-neutral-100 dark:bg-neutral-700 text-neutral-600 dark:text-neutral-300 font-medium shrink-0">
+                    {item.role}
+                  </span>
+                )}
               </div>
             ))}
           </div>
@@ -717,58 +849,82 @@ function Experience() {
 /* UI/UX PORTFOLIO */
 function UIUXPortfolio({ onPreview }: { onPreview: (title: string, url: string, isImage?: boolean) => void }) {
   return (
-    <div className="content-inner">
+    <div className="content-inner space-y-6">
       <PageHeader eyebrow="DESIGN" title="UI/UX Portfolio" description={portfolioData.uiux.description} />
 
-      <div className="skills-container">
+      <div className="flex flex-wrap gap-2">
         {portfolioData.uiux.skills.map((skill, index) => (
-          <span className="skill-tag" key={index}>{skill}</span>
+          <span
+            key={index}
+            className="px-2.5 py-1 text-xs font-medium rounded-lg border border-black/[0.08] dark:border-white/[0.1] bg-white/50 dark:bg-neutral-800/50 text-neutral-700 dark:text-neutral-300"
+          >
+            {skill}
+          </span>
         ))}
       </div>
 
-      <h2 className="section-title">Case Studies</h2>
-      <div className="featured-grid">
-        {portfolioData.uiux.featured.map((item, index) => (
-          <div className="featured-card" key={index}>
+      <div className="space-y-3 pt-2">
+        <h2 className="section-title text-sm font-semibold uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
+          Case Studies
+        </h2>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          {portfolioData.uiux.featured.map((item, index) => (
             <div
-              className="featured-card-thumb cursor-pointer group overflow-hidden"
-              onClick={() => onPreview(item.title, item.image, true)}
-            >
-              {item.image ? (
-                <img
-                  src={item.image}
-                  alt={item.title}
-                  loading="lazy"
-                  className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                />
-              ) : (
-                <Palette size={28} className="text-gray-400" />
-              )}
-            </div>
-            <div className="featured-card-body">
-              <h4>{item.title}</h4>
-              <p>{item.description}</p>
-              <a href={item.figma} target="_blank" rel="noopener noreferrer" className="action-btn-primary text-xs py-1 px-2 inline-flex">
-                View on Figma <ExternalLink size={11} />
-              </a>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      <div className="flex items-center justify-between mt-8 mb-3.5">
-        <h2 className="section-title m-0">Visual Portfolio (Fiverr Deliverables)</h2>
-        <span className="text-xs text-slate-400 font-medium">{portfolioData.uiux.images.length} Designs</span>
-      </div>
-
-      <div className="image-grid">
-        {portfolioData.uiux.images.length === 0 ? (
-          <EmptyState icon={<Palette size={24} />} title="Visual Portfolio" description="Images will appear here." />
-        ) : (
-          portfolioData.uiux.images.map((image, index) => (
-            <div
-              className="portfolio-image cursor-pointer group overflow-hidden relative"
               key={index}
+              className="rounded-2xl border border-black/[0.08] dark:border-white/[0.1] bg-white/60 dark:bg-neutral-800/40 backdrop-blur-md overflow-hidden flex flex-col"
+            >
+              <div
+                className="h-40 cursor-pointer overflow-hidden relative group bg-neutral-100 dark:bg-neutral-700/50 flex items-center justify-center"
+                onClick={() => onPreview(item.title, item.image, true)}
+              >
+                {item.image ? (
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    loading="lazy"
+                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                  />
+                ) : (
+                  <Palette size={28} className="text-neutral-400" />
+                )}
+              </div>
+              <div className="p-4 flex-1 flex flex-col justify-between">
+                <div>
+                  <h4 className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">{item.title}</h4>
+                  <p className="text-xs text-neutral-600 dark:text-neutral-400 mt-1 leading-relaxed">
+                    {item.description}
+                  </p>
+                </div>
+                <a
+                  href={item.figma}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-3 action-btn-primary text-xs py-1.5 px-2.5 inline-flex items-center gap-1.5 self-start"
+                >
+                  View on Figma <ExternalLink size={12} />
+                </a>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="space-y-3 pt-4">
+        <div className="flex items-center justify-between">
+          <h2 className="section-title m-0 text-sm font-semibold uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
+            Visual Portfolio (Fiverr Deliverables)
+          </h2>
+          <span className="text-xs text-neutral-400 font-medium">
+            {portfolioData.uiux.images.length} Designs
+          </span>
+        </div>
+
+        {/* 2 in a row on both mobile and desktop with fixed 4:3 aspect ratio */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {portfolioData.uiux.images.map((image, index) => (
+            <div
+              key={index}
+              className="aspect-[4/3] rounded-2xl border border-black/[0.08] dark:border-white/[0.1] bg-neutral-100 dark:bg-neutral-800/50 overflow-hidden relative cursor-pointer group"
               onClick={() => onPreview(`UI/UX Project #${index + 1}`, image, true)}
             >
               <img
@@ -778,56 +934,83 @@ function UIUXPortfolio({ onPreview }: { onPreview: (title: string, url: string, 
                 decoding="async"
                 className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
               />
-              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center">
-                <Eye size={20} className="text-white opacity-0 group-hover:opacity-100 transition-opacity" />
+              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/25 transition-colors flex items-center justify-center">
+                <Eye
+                  size={24}
+                  className="text-white opacity-0 group-hover:opacity-100 transition-opacity"
+                />
               </div>
             </div>
-          ))
-        )}
+          ))}
+        </div>
       </div>
     </div>
   );
 }
 
 /* DATA ENGINEERING */
-
 function DataEngineering() {
   return (
-    <div className="content-inner">
+    <div className="content-inner space-y-6">
       <PageHeader eyebrow="DATA" title="Data Engineering" description={portfolioData.dataEngineering.description} />
 
-      <div className="skills-container">
+      <div className="flex flex-wrap gap-2">
         {portfolioData.dataEngineering.skills.map((skill, index) => (
-          <span className="skill-tag" key={index}>{skill}</span>
+          <span
+            key={index}
+            className="px-2.5 py-1 text-xs font-medium rounded-lg border border-black/[0.08] dark:border-white/[0.1] bg-white/50 dark:bg-neutral-800/50 text-neutral-700 dark:text-neutral-300"
+          >
+            {skill}
+          </span>
         ))}
       </div>
 
-      <h2 className="section-title">Projects</h2>
-      <div className="data-project-list">
-        {portfolioData.dataEngineering.projects.map((project, index) => (
-          <div className="data-project-card" key={index}>
-
-            <div className="data-project-content">
-              <div className="data-project-header">
-                <h3>{project.title}</h3>
-                {project.status && <span className="project-status">{project.status}</span>}
+      <div className="space-y-3 pt-2">
+        <h2 className="section-title text-sm font-semibold uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
+          Projects
+        </h2>
+        <div className="space-y-4">
+          {portfolioData.dataEngineering.projects.map((project, index) => (
+            <div
+              key={index}
+              className="p-5 rounded-2xl border border-black/[0.08] dark:border-white/[0.1] bg-white/60 dark:bg-neutral-800/40 backdrop-blur-md"
+            >
+              <div className="flex items-center justify-between gap-2">
+                <h3 className="text-base font-semibold text-neutral-900 dark:text-neutral-100">{project.title}</h3>
+                {project.status && (
+                  <span className="text-xs px-2.5 py-0.5 rounded-full bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 border border-blue-200/60 dark:border-blue-800/60 font-medium">
+                    {project.status}
+                  </span>
+                )}
               </div>
-              <p className="technologies">{project.technologies}</p>
+              <p className="text-xs font-medium text-blue-600 dark:text-blue-400 mt-1">
+                {project.technologies}
+              </p>
 
-              <ul className="list-disc pl-4 my-2 text-xs text-slate-600 space-y-1">
+              <ul className="mt-3 space-y-1.5 pl-1">
                 {project.bullets.map((bullet, bIdx) => (
-                  <li key={bIdx}>{bullet}</li>
+                  <li key={bIdx} className="text-xs text-neutral-700 dark:text-neutral-300 flex items-start gap-2 leading-relaxed">
+                    <span className="text-neutral-400 select-none">▸</span>
+                    <span>{bullet}</span>
+                  </li>
                 ))}
               </ul>
 
               {project.github && (
-                <a href={project.github} target="_blank" rel="noopener noreferrer" className="github-button">
-                  <Code2 size={13} /> View Code on GitHub
-                </a>
+                <div className="mt-4 pt-3 border-t border-black/[0.06] dark:border-white/[0.08]">
+                  <a
+                    href={project.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 text-xs font-semibold text-neutral-800 dark:text-neutral-200 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                  >
+                    <Code2 size={14} /> View Code on GitHub
+                  </a>
+                </div>
               )}
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </div>
   );
@@ -836,24 +1019,39 @@ function DataEngineering() {
 /* PERSONAL PROJECTS */
 function PersonalProjects() {
   return (
-    <div className="content-inner">
+    <div className="content-inner space-y-6">
       <PageHeader eyebrow="ENTREPRENEURSHIP" title="Personal Projects" description="Products and experiments I am building alongside my work." />
-      <div className="featured-grid">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {portfolioData.personalProjects.map((project, index) => (
-          <div className="featured-card" key={index}>
-            <div className="featured-card-thumb">
-              {project.image ? <img src={project.image} alt={project.title} /> : <Rocket size={28} className="text-gray-400" />}
-            </div>
-            <div className="featured-card-body">
-              <h4>{project.title}</h4>
-              <p>{project.description}</p>
-              {project.status === "Coming Soon" ? (
-                <span className="coming-soon">Coming Soon</span>
+          <div
+            key={index}
+            className="rounded-2xl border border-black/[0.08] dark:border-white/[0.1] bg-white/60 dark:bg-neutral-800/40 backdrop-blur-md overflow-hidden flex flex-col"
+          >
+            <div className="h-40 bg-neutral-100 dark:bg-neutral-700/50 flex items-center justify-center">
+              {project.image ? (
+                <img src={project.image} alt={project.title} className="w-full h-full object-cover" />
               ) : (
-                <a href={project.link} target="_blank" rel="noopener noreferrer" className="action-btn-primary text-xs py-1 px-2 inline-flex">
-                  Visit Project <ExternalLink size={11} />
-                </a>
+                <Rocket size={28} className="text-neutral-400" />
               )}
+            </div>
+            <div className="p-4 flex-1 flex flex-col justify-between">
+              <div>
+                <h4 className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">{project.title}</h4>
+                <p className="text-xs text-neutral-600 dark:text-neutral-400 mt-1 leading-relaxed">
+                  {project.description}
+                </p>
+              </div>
+              <div className="mt-3">
+                {project.status === "Coming Soon" ? (
+                  <span className="text-xs px-2.5 py-0.5 rounded-full bg-neutral-100 dark:bg-neutral-700 text-neutral-600 dark:text-neutral-300 font-medium">
+                    Coming Soon
+                  </span>
+                ) : (
+                  <a href={project.link} target="_blank" rel="noopener noreferrer" className="action-btn-primary text-xs py-1.5 px-2.5 inline-flex items-center gap-1.5">
+                    Visit Project <ExternalLink size={12} />
+                  </a>
+                )}
+              </div>
             </div>
           </div>
         ))}
@@ -863,6 +1061,7 @@ function PersonalProjects() {
 }
 
 /* PRIVATE FILES COMPONENT */
+
 function Private({
   onPreview,
 }: {
@@ -877,7 +1076,7 @@ function Private({
       .then((res) => {
         if (res.ok) setIsAuthenticated(true);
       })
-      .catch(() => { });
+      .catch(() => {});
   }, []);
 
   const handleUnlock = async (e: React.FormEvent) => {
@@ -885,7 +1084,7 @@ function Private({
     setErrorMsg("");
 
     try {
-      const res = await fetch("/api/unlock-private", { // <-- Change to unlock-private
+      const res = await fetch("/api/unlock-private", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ password }),
@@ -905,11 +1104,11 @@ function Private({
   if (!isAuthenticated) {
     return (
       <div className="content-inner flex flex-col items-center justify-center py-16">
-        <div className="w-14 h-14 rounded-2xl bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-600 mb-4 shadow-sm">
+        <div className="w-14 h-14 rounded-2xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800/50 flex items-center justify-center text-amber-600 dark:text-amber-400 mb-4">
           <LockKeyhole size={28} />
         </div>
-        <h2 className="text-lg font-semibold text-slate-800 mb-1">Confidential Documents</h2>
-        <p className="text-xs text-slate-500 mb-6 text-center max-w-sm">
+        <h2 className="text-base font-semibold text-neutral-900 dark:text-neutral-100 mb-1">Confidential Documents</h2>
+        <p className="text-xs text-neutral-500 dark:text-neutral-400 mb-6 text-center max-w-sm">
           These documents are protected and intended solely for employers, embassies, and authorized partners.
         </p>
 
@@ -919,7 +1118,7 @@ function Private({
             placeholder="Enter security key..."
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="flex-1 px-3 py-2 text-xs border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="flex-1 px-3 py-2 text-xs border border-black/[0.1] dark:border-white/[0.15] bg-white/70 dark:bg-neutral-800/70 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500 text-neutral-900 dark:text-neutral-100"
           />
           <button type="submit" className="action-btn-primary text-xs py-2 px-4 whitespace-nowrap">
             Unlock
@@ -932,60 +1131,58 @@ function Private({
 
   // UNLOCKED CATEGORIZED SCREEN
   return (
-    <div className="content-inner">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-6 mb-6 border-b border-slate-200 gap-4">
+    <div className="content-inner space-y-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-6 border-b border-black/[0.08] dark:border-white/[0.1] gap-4">
         <div>
-          <span className="text-[10px] font-bold tracking-wider text-blue-600 uppercase">
+          <span className="text-xs font-bold tracking-wider text-blue-600 dark:text-blue-400 uppercase">
             RESTRICTED ACCESS GRANTED
           </span>
-          <h1 className="text-2xl font-bold text-slate-900 mt-0.5">
+          <h1 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mt-0.5">
             {portfolioData.privateFiles.title}
           </h1>
-          <p className="text-xs text-slate-500 mt-1 max-w-md">
+          <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-1 max-w-md leading-relaxed">
             {portfolioData.privateFiles.description}
           </p>
         </div>
 
-        {/* ONE-CLICK COMPLETE PROFILE ZIP DOWNLOAD BUTTON */}
         <a
           href={portfolioData.privateFiles.zipDownloadUrl}
           download="Momin_Hassan_Complete_Profile.zip"
-          className="inline-flex items-center gap-2 px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-semibold shadow-sm transition-colors whitespace-nowrap self-start sm:self-auto"
+          className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-semibold transition-colors whitespace-nowrap self-start sm:self-auto border border-blue-500"
         >
           <FolderArchive size={16} />
           <span>Download All (ZIP)</span>
         </a>
       </div>
 
-      {/* CATEGORIZED SECTIONS */}
-      <div className="space-y-8">
+      <div className="space-y-6">
         {portfolioData.privateFiles.categories.map((group, groupIdx) => (
           <div key={groupIdx} className="space-y-3">
-            <h2 className="text-xs font-bold uppercase tracking-wider text-slate-500">
+            <h2 className="text-xs font-semibold uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
               {group.categoryName}
             </h2>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {group.files.map((file, fileIdx) => {
                 const isImage = file.type === "image";
-                const secureFileUrl = `/api/protected-docs?file=${encodeURIComponent(file.file)}`;
-                const secureDownloadUrl = `/api/protected-docs?file=${encodeURIComponent(file.file)}&download=1`;
+                const secureFileUrl = `/api/unlock-private?file=${encodeURIComponent(file.file)}`;
+                const secureDownloadUrl = `/api/unlock-private?file=${encodeURIComponent(file.file)}&download=1`;
 
                 return (
                   <div
                     key={fileIdx}
                     onClick={() => onPreview(file.name, secureFileUrl, isImage)}
-                    className="flex items-center justify-between p-3.5 bg-white border border-slate-200 hover:border-blue-400 rounded-xl cursor-pointer hover:shadow-md transition-all group"
+                    className="flex items-center justify-between p-3.5 rounded-xl border border-black/[0.08] dark:border-white/[0.1] bg-white/60 dark:bg-neutral-800/40 backdrop-blur-md hover:border-black/20 dark:hover:border-white/20 transition-all cursor-pointer group"
                   >
                     <div className="flex items-center gap-3 overflow-hidden">
-                      <div className="w-10 h-10 rounded-lg bg-slate-50 border border-slate-100 flex items-center justify-center text-slate-600 group-hover:bg-blue-50 group-hover:text-blue-600 transition-colors flex-shrink-0">
+                      <div className="w-10 h-10 rounded-xl bg-neutral-100 dark:bg-neutral-700/60 border border-black/[0.06] dark:border-white/[0.08] flex items-center justify-center text-neutral-600 dark:text-neutral-300 group-hover:text-blue-500 transition-colors shrink-0">
                         {isImage ? <ImageIcon size={20} /> : <FileText size={20} />}
                       </div>
                       <div className="overflow-hidden">
-                        <p className="text-xs font-semibold text-slate-800 truncate group-hover:text-blue-600">
+                        <p className="text-xs font-semibold text-neutral-900 dark:text-neutral-100 truncate group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                           {file.name}
                         </p>
-                        {file.size && <span className="text-[10px] text-slate-400">{file.size}</span>}
+                        {file.size && <span className="text-xs text-neutral-400 dark:text-neutral-500">{file.size}</span>}
                       </div>
                     </div>
 
@@ -994,23 +1191,23 @@ function Private({
                       download={file.file}
                       onClick={(e) => e.stopPropagation()}
                       title="Download file"
-                      className="p-1.5 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-md transition-colors"
+                      className="p-1.5 text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-200 rounded-md transition-colors"
                     >
                       <Download size={14} />
                     </a>
                   </div>
                 );
               })}
-          </div>
+            </div>
           </div>
         ))}
+      </div>
     </div>
-    </div >
   );
 }
 
 /* ==========================================================================
-   MULTI-WINDOW DRAGGABLE PREVIEW WINDOW WITH BOUNDARY SHELL & NON-BLOCKING DESKTOP
+   MULTI-WINDOW DRAGGABLE PREVIEW WINDOW WITH CLEAN MACOS CHROME
    ========================================================================== */
 function DraggablePreviewModal({
   windowData,
@@ -1040,11 +1237,10 @@ function DraggablePreviewModal({
     const modalWidth = modalRef.current.offsetWidth;
     const modalHeight = modalRef.current.offsetHeight;
 
-    // Viewport Shell Constraints
     const minX = 10;
     const maxX = window.innerWidth - modalWidth - 10;
-    const minY = 35; // Below top menu bar
-    const maxY = window.innerHeight - modalHeight - 75; // Above bottom dock
+    const minY = 35;
+    const maxY = window.innerHeight - modalHeight - 75;
 
     let nextX = e.clientX - dragRef.current.x;
     let nextY = e.clientY - dragRef.current.y;
@@ -1078,62 +1274,45 @@ function DraggablePreviewModal({
         left: `${windowData.x}px`,
         top: `${windowData.y}px`,
       }}
-      className="fixed z-[9999] w-[90vw] max-w-2xl h-[65vh] bg-white rounded-xl shadow-2xl flex flex-col overflow-hidden border border-slate-300/80 backdrop-blur-md"
+      className="fixed z-[9999] w-[90vw] max-w-2xl h-[65vh] bg-white/95 dark:bg-neutral-900/95 rounded-2xl flex flex-col overflow-hidden border border-black/15 dark:border-white/20 backdrop-blur-xl"
     >
-      {/* WINDOW HEADER (DRAG HANDLE) */}
+      {/* WINDOW HEADER */}
       <div
-        className="h-9 bg-slate-100/90 border-b border-slate-200 flex items-center justify-between px-3 cursor-grab active:cursor-grabbing select-none"
+        className="h-10 bg-neutral-100/80 dark:bg-neutral-800/80 border-b border-black/[0.06] dark:border-white/[0.08] flex items-center justify-between px-3.5 cursor-grab active:cursor-grabbing select-none"
         onMouseDown={startModalDrag}
       >
         <div className="flex items-center gap-2">
           <button
             onClick={onClose}
-            className="w-3 h-3 rounded-full bg-red-500 hover:bg-red-600 flex items-center justify-center text-black/60 hover:text-black transition-colors"
+            className="w-3 h-3 rounded-full bg-[#ff5f56] flex items-center justify-center text-black/40 hover:text-black transition-colors"
           >
             <X size={8} />
           </button>
-          <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
-          <div className="w-3 h-3 rounded-full bg-green-500"></div>
+          <div className="w-3 h-3 rounded-full bg-[#ffbd2e]"></div>
+          <div className="w-3 h-3 rounded-full bg-[#27c93f]"></div>
         </div>
-        <span className="text-xs font-medium text-slate-700 truncate max-w-xs">{windowData.title}</span>
+        <span className="text-xs font-semibold text-neutral-800 dark:text-neutral-200 truncate max-w-xs">{windowData.title}</span>
         <div className="w-12 flex justify-end">
-          <a href={windowData.url} target="_blank" rel="noopener noreferrer" className="text-slate-500 hover:text-slate-800">
-            <ExternalLink size={13} />
+          <a href={windowData.url} target="_blank" rel="noopener noreferrer" className="text-neutral-500 hover:text-neutral-900 dark:hover:text-neutral-100">
+            <ExternalLink size={14} />
           </a>
         </div>
       </div>
 
       {/* PREVIEW CONTENT */}
-      <div className="flex-1 w-full bg-slate-50 overflow-hidden flex items-center justify-center p-2 select-none">
+      <div className="flex-1 w-full bg-neutral-50 dark:bg-neutral-950 overflow-hidden flex items-center justify-center p-2 select-none">
         {windowData.isImage ? (
           <img
             src={windowData.url}
             alt={windowData.title}
-            className="max-w-full max-h-full object-contain rounded-md shadow-sm pointer-events-none"
+            className="max-w-full max-h-full object-contain rounded-lg pointer-events-none"
           />
         ) : (
-          <object
-            data={`${windowData.url}#toolbar=0&navpanes=0&view=FitH`}
-            type="application/pdf"
-            className="w-full h-full rounded-md border border-slate-200"
-          >
-            {/* Fallback if the browser refuses embedded PDF display */}
-            <div className="flex flex-col items-center justify-center h-full p-6 text-center">
-              <FileText size={48} className="text-slate-400 mb-3" />
-              <p className="text-sm font-medium text-slate-700 mb-1">{windowData.title}</p>
-              <p className="text-xs text-slate-500 mb-4">
-                Your browser does not support embedded PDF previews.
-              </p>
-              <a
-                href={windowData.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="action-btn-primary text-xs py-1.5 px-3"
-              >
-                Open in Full Window
-              </a>
-            </div>
-          </object>
+          <iframe
+            src={`${windowData.url}#toolbar=1&navpanes=0`}
+            className="w-full h-full rounded-lg border-0"
+            title={windowData.title}
+          />
         )}
       </div>
     </div>
@@ -1143,34 +1322,16 @@ function DraggablePreviewModal({
 /* SHARED UI HELPERS */
 function PageHeader({ eyebrow, title, description }: { eyebrow: string; title: string; description: string }) {
   return (
-    <div className="page-header">
-      <p className="eyebrow">{eyebrow}</p>
-      <h1>{title}</h1>
-      <p>{description}</p>
-    </div>
-  );
-}
-
-function FileRow({ icon, name, details, date }: { icon: React.ReactNode; name: string; details: string; date: string }) {
-  return (
-    <div className="finder-file-row">
-      <div className="finder-file-icon">{icon}</div>
-      <div className="finder-file-name">
-        <strong>{name}</strong>
-        <span>{details}</span>
-      </div>
-      <span className="finder-file-date">{date}</span>
-      <MoreHorizontal size={17} className="row-more" />
-    </div>
-  );
-}
-
-function EmptyState({ icon, title, description }: { icon: React.ReactNode; title: string; description: string }) {
-  return (
-    <div className="empty-state">
-      <div className="empty-state-icon">{icon}</div>
-      <h3>{title}</h3>
-      <p>{description}</p>
+    <div className="page-header space-y-1 mb-6">
+      <p className="eyebrow text-xs font-semibold tracking-wider uppercase text-neutral-400 dark:text-neutral-500">
+        {eyebrow}
+      </p>
+      <h1 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100 tracking-tight">
+        {title}
+      </h1>
+      <p className="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed max-w-xl">
+        {description}
+      </p>
     </div>
   );
 }
